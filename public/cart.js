@@ -1,91 +1,134 @@
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cart =
+JSON.parse(localStorage.getItem("cart")) || [];
 
 function renderCart(){
 
- let box = document.getElementById("cartBox");
+let box =
+document.getElementById("cartBox");
 
- box.innerHTML = "";
+let checkoutBox =
+document.getElementById("checkoutBox");
 
- let total = 0;
+box.innerHTML = "";
 
- cart.forEach((item,index)=>{
+if(cart.length===0){
 
- total += item.price * item.qty;
+box.innerHTML = `
+<h2>
+Your Cart Is Empty
+</h2>
+`;
 
- box.innerHTML += `
+checkoutBox.style.display="none";
 
- <div class="cart-card">
+return;
+}
 
- <img src="${item.image}">
+checkoutBox.style.display="block";
 
- <div>
+let total = 0;
 
- <h3>${item.name}</h3>
+cart.forEach((item,i)=>{
 
- <p>₹${item.price}</p>
+total += item.price * item.qty;
 
- <p>Qty: ${item.qty}</p>
+box.innerHTML += `
 
- </div>
- <div>
+<div class="cart-card">
 
- <button onclick="increase(${index})">+</button>
+<img
+src="${item.image}"
+class="cart-image"
+>
 
- <button onclick="decrease(${index})">-</button>
+<div class="cart-details">
 
- <button onclick="removeItem(${index})">
- Delete
- </button>
+<h3>${item.name}</h3>
 
- </div>
+<p class="price">
+₹${item.price}
+</p>
 
- </div>
+<p class="qty">
+Quantity: ${item.qty}
+</p>
 
- `;
- });
+<div class="cart-buttons">
 
- document.getElementById("total").innerText =
- "Total ₹" + total;
+<button onclick="increase(${i})">
++
+</button>
+
+<button onclick="decrease(${i})">
+-
+</button>
+
+<button
+class="delete-btn"
+onclick="removeItem(${i})">
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+`;
+});
+
+document.getElementById("total")
+.innerText =
+"Subtotal: ₹" + total;
 }
 
 function increase(i){
 
- cart[i].qty++;
- save();
+cart[i].qty++;
+
+save();
 }
+
 function decrease(i){
 
- cart[i].qty--;
+cart[i].qty--;
 
- if(cart[i].qty <= 0){
-  cart.splice(i,1);
- }
+if(cart[i].qty<=0){
 
- save();
+cart.splice(i,1);
+}
+
+save();
 }
 
 function removeItem(i){
 
- cart.splice(i,1);
- save();
+cart.splice(i,1);
+
+save();
 }
 
 function save(){
 
- localStorage.setItem("cart", JSON.stringify(cart));
- renderCart();
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+renderCart();
 }
 
-function placeOrder(){
+function placeCODOrder(){
 
- let orderId = Math.floor(Math.random()*100000);
+alert(
+"Order Placed Successfully"
+);
 
- alert(
- `Order Placed Successfully ✅\nOrder ID: ${orderId}`
- );
+cart=[];
 
- cart = [];
- save();
+save();
 }
 
 renderCart();
