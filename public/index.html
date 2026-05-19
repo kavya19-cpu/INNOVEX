@@ -2,66 +2,113 @@
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Innovex</title>
 
   <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
-  <div class="navbar">
+<div class="hamburger" onclick="toggleMenu()">
+☰
+</div>
 
-    <h1 class="logo">INNOVEX</h1>
+<div id="sideMenu" class="side-menu">
 
-    <input type="text" id="search" placeholder="Search products...">
+<h3>Categories</h3>
 
-    <div class="nav-right">
+<div class="cat-list">
 
-      <button onclick="toggleDarkMode()">🌙</button>
+<button onclick="filterProducts('All')">
+All Products
+</button>
 
-      <button onclick="location.href='wishlist.html'">
-        ❤️ Wishlist
-      </button>
+<button onclick="filterProducts('Clothing')">
+Clothing
+</button>
 
-      <button onclick="location.href='login.html'">
-        👤 Login
-      </button>
+<button onclick="filterProducts('Shoes')">
+Shoes
+</button>
 
-    </div>
+<button onclick="filterProducts('Bags')">
+Bags
+</button>
 
-  </div>
+<button onclick="filterProducts('Accessories')">
+Accessories
+</button>
 
-  <section class="hero">
+</div>
 
-    <h1>Modern Fashion Store</h1>
+</div>
 
-    <p>Discover premium collections</p>
+<div class="navbar">
 
-    <button>Shop Now</button>
+<h1 class="logo">
+INNOVEX
+</h1>
 
-  </section>
+<div class="nav-actions">
 
-  <div class="categories">
+<input
+type="text"
+id="search"
+placeholder="Search products..."
+>
 
-    <button onclick="filterProducts('All')">All</button>
-    <button onclick="filterProducts('Clothing')">Clothing</button>
-    <button onclick="filterProducts('Shoes')">Shoes</button>
-    <button onclick="filterProducts('Accessories')">Accessories</button>
-    <button onclick="filterProducts('Bags')">Bags</button>
+<button onclick="location.href='cart.html'">
+Cart
+</button>
 
-  </div>
+<button onclick="logout()">
+Logout
+</button>
 
-  <div id="products"></div>
+</div>
 
-  <div id="toast"></div>
+</div>
 
-  <script src="script.js"></script>
+<section class="hero">
+
+<div class="hero-content">
+
+<h1>
+Premium Fashion Store
+</h1>
+
+<p>
+Modern Shopping Experience
+</p>
+
+<button>
+Shop Now
+</button>
+
+</div>
+
+</section>
+
+<p class="cart-info-bar">
+Items:
+<span id="count">
+0
+</span>
+</p>
+
+<div id="products"></div>
+
+<div id="toast"></div>
+
+<script src="auth.js"></script>
+<script src="script.js"></script>
 
 </body>
-
 </html>
