@@ -1,64 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-    <title>Login</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Innovex Login
+</title>
+
+<link rel="stylesheet"
+href="style.css">
 
 </head>
 
-<body>
+<body class="auth-body">
 
-    <div class="auth-box">
+<div class="auth-container">
 
-        <h1>Login</h1>
+<div class="auth-left">
 
-        <input type="email" id="email" placeholder="Enter Email">
+<h1>
+INNOVEX
+</h1>
 
-        <input type="password" id="password" placeholder="Enter Password">
+<p>
+Luxury Fashion Store
+</p>
 
-        <button onclick="login()">Login</button>
+<img
+src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80"
+>
 
-        <p>
-            Don't have account?
-            <a href="signup.html">Signup</a>
-        </p>
+</div>
 
-    </div>
+<div class="auth-right">
 
-    <script src="auth.js"></script>
-    <!DOCTYPE html>
-    <html>
+<form class="auth-form">
 
-    <head>
+<h2>
+Welcome Back
+</h2>
 
-        <title>Login</title>
-        <link rel="stylesheet" href="style.css">
+<p class="sub-text">
+Login To Continue Shopping
+</p>
 
-    </head>
+<input
+type="email"
+id="loginEmail"
+placeholder="Enter Email"
+required
+>
 
-    <body>
+<input
+type="password"
+id="loginPassword"
+placeholder="Enter Password"
+required
+>
 
-        <div class="auth-box">
+<button
+type="button"
+onclick="login()">
 
-            <h1>Login</h1>
+Login
 
-            <input type="email" id="email" placeholder="Enter Email">
+</button>
 
-            <input type="password" id="password" placeholder="Enter Password">
+<p class="bottom-text">
 
-            <button onclick="login()">Login</button>
+Don't have an account?
 
-            <p>
-                Don't have account?
-                <a href="signup.html">Signup</a>
-            </p>
+<a href="signup.html">
 
-        </div>
+Signup
 
-        <script src="auth.js"></script>
+</a>
 
-    </body>
+</p>
 
-    </html>
+</form>
+
+</div>
+
+</div>
+
+<script src="auth.js"></script>
+
+</body>
+</html>
