@@ -1,49 +1,81 @@
+/* SIGNUP */
+
 function signup(){
 
-let name = document.getElementById("name").value;
-let email = document.getElementById("email").value;
-let password = document.getElementById("password").value;
+const name =
+document.getElementById("signupName").value;
 
-if(name === "" || email === "" || password === ""){
+const email =
+document.getElementById("signupEmail").value;
 
- alert("Please Fill All Fields");
- return;
+const password =
+document.getElementById("signupPassword").value;
+
+if(!name || !email || !password){
+
+alert("Please Fill All Fields");
+
+return;
 }
 
-let users = JSON.parse(localStorage.getItem("users")) || [];
+const user = {
 
-users.push({
-  name,
-  email,
-  password
-});
+name,
+email,
+password
+};
 
-localStorage.setItem("users", JSON.stringify(users));
+localStorage.setItem(
+"user",
+JSON.stringify(user)
+);
 
 alert("Signup Successful");
 
-window.location.href = "login.html";
+window.location.href="login.html";
 }
+
+/* LOGIN */
+
 function login(){
-let email = document.getElementById("email").value;
-let password = document.getElementById("password").value;
 
-let users = JSON.parse(localStorage.getItem("users")) || [];
+const email =
+document.getElementById("loginEmail").value;
 
-let validUser = users.find(user =>
- user.email === email && user.password === password
+const password =
+document.getElementById("loginPassword").value;
+
+const user =
+JSON.parse(localStorage.getItem("user"));
+
+if(
+user &&
+user.email===email &&
+user.password===password
+){
+
+localStorage.setItem(
+"loggedInUser",
+JSON.stringify(user)
 );
 
-if(validUser){
+alert("Login Successful");
 
- localStorage.setItem("loggedInUser", JSON.stringify(validUser));
-
- alert("Login Successful");
-
- window.location.href = "index.html";
+window.location.href="index.html";
 
 }else{
 
- alert("Invalid Credentials");
+alert("Invalid Email Or Password");
 }
+}
+
+/* LOGOUT */
+
+function logout(){
+
+localStorage.removeItem(
+"loggedInUser"
+);
+
+window.location.href="login.html";
 }
