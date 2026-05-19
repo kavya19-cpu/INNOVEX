@@ -1,23 +1,39 @@
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+const loggedUser =
+JSON.parse(localStorage.getItem("loggedInUser"));
+
+if(!loggedUser){
+
+window.location.href="login.html";
+}
+
+let cart =
+JSON.parse(localStorage.getItem("cart")) || [];
+
 let allProducts = [];
 
-/* =========================
-   UPDATE CART COUNT
-========================= */
+function updateCount(){
 
-function updateCount() {
+const count =
+document.getElementById("count");
 
-  let total = cart.reduce((sum, item) => sum + item.qty, 0);
+let total =
+cart.reduce((sum,item)=>sum+item.qty,0);
 
-  document.getElementById("count").innerText = total;
+count.innerText = total;
 }
 
 updateCount();
 
-/* =========================
-   FETCH PRODUCTS
-========================= */
+/* MENU */
+
+function toggleMenu(){
+
+document
+.getElementById("sideMenu")
+.classList.toggle("open");
+}
+
+/* FETCH PRODUCTS */
 
 fetch("/products")
 
@@ -25,190 +41,135 @@ fetch("/products")
 
 .then(data => {
 
-  allProducts = data;
+allProducts = data;
 
-  showProducts(allProducts);
-})
-
-.catch(error => {
-
-  console.log("Error Loading Products:", error);
+showProducts(allProducts);
 });
 
-/* =========================
-   SHOW PRODUCTS
-========================= */
+/* SHOW PRODUCTS */
 
-function showProducts(products) {
+function showProducts(products){
 
-  let box = document.getElementById("products");
+const productsBox =
+document.getElementById("products");
 
-  box.innerHTML = "";
+productsBox.innerHTML = "";
 
-  if(products.length === 0){
+products.forEach(product => {
 
-    box.innerHTML = `
-      <h2 style="text-align:center;">
-        No Products Found
-      </h2>
-    `;
+productsBox.innerHTML += `
 
-    return;
-  }
+<div class="card">
 
-  products.forEach(product => {
+<img
+src="${product.image}"
+onerror="this.src='https://via.placeholder.com/300'"
+>
 
-    box.innerHTML += `
+<h3>${product.name}</h3>
 
-    <div class="card">
+<p>₹${product.price}</p>
 
-      <img src="${product.image}">
+<button onclick="addToCart(${product.id})">
+Add To Cart
+</button>
 
-      <div class="card-content">
-
-        <h3>${product.name}</h3>
-
-        <div class="rating">
-          ${"⭐".repeat(product.rating)}
-        </div>
-
-        <div class="price">
-          ₹${product.price}
-        </div>
-
-        <div class="card-buttons">
-
-          <button onclick="addToCart(${product.id})">
-            Add To Cart
-          </button>
-
-          <button onclick="addWishlist(${product.id})">
-            ❤️
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-    `;
-  });
+</div>
+`;
+});
 }
 
-/* =========================
-   ADD TO CART
-========================= */
+/* FILTER */
 
-function addToCart(id) {
+function filterProducts(category){
 
-  let product = allProducts.find(item => item.id === id);
+if(category==="All"){
 
-  if (!product) return;
+showProducts(allProducts);
 
-  let existing = cart.find(item => item.id === id);
+}else{
 
-  if (existing) {
+let filtered =
+allProducts.filter(product =>
+product.category===category
+);
 
-    existing.qty++;
-
-  } else {
-
-    cart.push({
-      ...product,
-      qty: 1
-    });
-  }
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-
-  updateCount();
-
-  showToast(product.name + " Added To Cart");
+showProducts(filtered);
 }
 
-/* =========================
-   ADD TO WISHLIST
-========================= */
-
-function addWishlist(id) {
-
-  let product = allProducts.find(item => item.id === id);
-
-  if (!product) return;
-
-  wishlist.push(product);
-
-  localStorage.setItem("wishlist", JSON.stringify(wishlist));
-
-  showToast(product.name + " Added To Wishlist ❤️");
+document
+.getElementById("sideMenu")
+.classList.remove("open");
 }
 
-/* =========================
-   FILTER PRODUCTS
-========================= */
+/* SEARCH */
 
-function filterProducts(category) {
+const search =
+document.getElementById("search");
 
-  if (category === "All") {
+search.addEventListener("input",function(){
 
-    showProducts(allProducts);
+let value =
+this.value.toLowerCase();
 
-  } else {
+let filtered =
+allProducts.filter(product =>
 
-    let filtered = allProducts.filter(product =>
-      product.category === category
-    );
+product.name
+.toLowerCase()
+.includes(value)
 
-    showProducts(filtered);
-  }
+);
+
+showProducts(filtered);
+});
+
+/* ADD TO CART */
+
+function addToCart(id){
+
+let product =
+allProducts.find(item => item.id===id);
+
+let existing =
+cart.find(item => item.id===id);
+
+if(existing){
+
+existing.qty++;
+
+}else{
+
+cart.push({
+...product,
+qty:1
+});
 }
 
-/* =========================
-   SEARCH PRODUCTS
-========================= */
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
 
-let search = document.getElementById("search");
+updateCount();
 
-if(search){
-
-  search.addEventListener("input", function () {
-
-    let value = this.value.toLowerCase();
-
-    let filtered = allProducts.filter(product =>
-
-      product.name.toLowerCase().includes(value)
-
-    );
-
-    showProducts(filtered);
-  });
+showToast("Added To Cart");
 }
 
-/* =========================
-   TOAST NOTIFICATION
-========================= */
+/* TOAST */
 
-function showToast(message) {
+function showToast(message){
 
-  let toast = document.getElementById("toast");
+const toast =
+document.getElementById("toast");
 
-  toast.innerText = message;
+toast.innerText = message;
 
-  toast.classList.add("show");
+toast.classList.add("show");
 
-  setTimeout(() => {
+setTimeout(()=>{
 
-    toast.classList.remove("show");
+toast.classList.remove("show");
 
-  }, 2000);
-}
-
-/* =========================
-   DARK MODE
-========================= */
-
-function toggleDarkMode() {
-
-  document.body.classList.toggle("dark");
+},2000);
 }
